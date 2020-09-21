@@ -15,5 +15,9 @@ public class Player {
 	public String toString() {
 		return " " + playerHand + " ";
 	}
+	
+	public boolean hasAce() {
+		return playerHand.isAce();
+	}
 
 }

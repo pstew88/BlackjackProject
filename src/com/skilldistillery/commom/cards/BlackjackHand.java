@@ -2,6 +2,8 @@ package com.skilldistillery.commom.cards;
 
 public class BlackjackHand extends Hand {
 
+	private int handValue;
+	
 	public BlackjackHand() {
 	}
 
@@ -17,10 +19,30 @@ public class BlackjackHand extends Hand {
 	
 	@Override
 	public int getHandValue() {
-		int result = 0;
+		handValue = 0;
 		for (int i = 0; i < hand.size(); i++) {
-			result = hand.get(i).getValue() + result;
+			handValue = hand.get(i).getValue() + handValue;
+			if (hand.get(i).getValue()==11 && handValue > 21) {
+				handValue = handValue-10;
+			}
 		}
-		return result; 
+		return handValue; 
+	}
+	
+
+	
+	public int getSoftAceValue() {
+		handValue = 0;
+		for (int i = 0; i < hand.size(); i++) {
+			handValue = hand.get(i).getValue() + handValue;
+		}
+		return handValue-10;
+	}
+
+
+	@Override
+	public int setHandValue() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

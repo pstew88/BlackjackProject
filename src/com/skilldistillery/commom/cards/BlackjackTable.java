@@ -7,6 +7,8 @@ public class BlackjackTable {
 	Dealer dealer = new Dealer();
 	Scanner kb = new Scanner(System.in);
 	Deck gameDeck = new Deck();
+	boolean playerUseSoftAce = false;
+	boolean dealerUseSoftAce = false;
 
 	public static void main(String[] args) {
 		BlackjackTable b = new BlackjackTable();
@@ -40,18 +42,29 @@ public class BlackjackTable {
 
 				if (player.getPlayerHand().getHandValue() <= 21) {
 					playerMenu();
-				} else if (player.getPlayerHand().getHandValue() >= 21) {
-					System.out.println("BUST! " + player.getPlayerHand().getHandValue() + " : Game Over");
-				}
 
-				else if (player.getPlayerHand().getHandValue() == 21) {
+				} else if (player.getPlayerHand().getHandValue() >= 21) {
+					if (player.hasAce()) {
+						player.getPlayerHand().getHandValue();
+						playerUseSoftAce = true;
+						playerMenu();
+					} else {
+						System.out.println("BUST! " + player.getPlayerHand().getHandValue() + " : Game Over");
+					}
+
+				} else if (player.getPlayerHand().getHandValue() == 21) {
 					System.out.println("You have hit 21, it is now the dealers turn");
 					System.out.println("");
 					dealerRun();
 				}
 			} else if (choice.contentEquals("2") || choice.contentEquals("two") || choice.contentEquals("stay")) {
-				System.out.println("You have chosen to stay at " + player.getPlayerHand().getHandValue()
-						+ " it is now the dealers turn.");
+				if (playerUseSoftAce) {
+					System.out.println("You have chosen to stay at " + player.getPlayerHand().getSoftAceValue()
+							+ " it is now the dealers turn.");
+				} else {
+					System.out.println("You have chosen to stay at " + player.getPlayerHand().getHandValue()
+							+ " it is now the dealers turn.");
+				}
 				dealerRun();
 			}
 		}
@@ -62,18 +75,26 @@ public class BlackjackTable {
 		System.out.println("Dealer's Hand: ");
 		System.out.println(dealer.toString());
 
-		if (dealer.getDealerHand().getHandValue() <= 17) {
-			dealer.addCardToHand();
-			dealerRun();
-
-		} else if (dealer.getDealerHand().getHandValue() >= 21) {
-			System.out.println("The Dealer BUSTs at " + dealer.getDealerHand().getHandValue() + " : You Win");
+		if (dealer.getDealerHand().getHandValue() > 21) {
+			System.out.println("The dealer busts  with " + dealer.getDealerHand().getHandValue()+" you win");
 		}
 
 		else if (dealer.getDealerHand().getHandValue() == 21) {
 			System.out.println("The Dealer has hit 21, lets see who wins");
 			System.out.println("");
 			compareResult();
+
+		}
+
+		else if (dealer.getDealerHand().getHandValue() >= 17)
+
+		{
+			compareResult();
+
+		} else  
+		{
+			dealer.addCardToHand();
+			dealerRun();
 		}
 	}
 
@@ -84,7 +105,7 @@ public class BlackjackTable {
 		} else if (dealer.getDealerHand().getHandValue() < player.getPlayerHand().getHandValue()) {
 			System.out.println("The Player has won with " + player.getPlayerHand().getHandValue());
 		} else if (dealer.getDealerHand().getHandValue() == player.getPlayerHand().getHandValue()) {
-			System.out.println("The Dealer has won");
+			System.out.println("The game is a tie, both you and the dealer have "+dealer.getDealerHand().getHandValue());
 		}
 	}
 

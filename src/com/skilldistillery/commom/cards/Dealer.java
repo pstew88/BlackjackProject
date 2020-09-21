@@ -3,9 +3,9 @@ package com.skilldistillery.commom.cards;
 
 public class Dealer {
 	private Deck dealerDeck = new Deck();
-	private Hand dealerHand = new BlackjackHand();
+	private BlackjackHand dealerHand = new BlackjackHand();
 
-	public Hand getDealerHand() {
+	public BlackjackHand getDealerHand() {
 		return dealerHand;
 	}
 
@@ -23,6 +23,10 @@ public class Dealer {
 	}
 	public String toStringHidden() {
 		return " " + dealerHand.toStringHidden() + " ";
+	}
+	
+	public boolean hasAce() {
+		return dealerHand.isAce();
 	}
 	
 	public Dealer() {
